@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import "./App.css";
@@ -14,9 +14,13 @@ function App() {
   const prevState = useRef({ r: rValue, g: gValue, b: bValue });
 
   const submitOnClick = () => {
-    setColor(`rgb(${rValue}, ${gValue}, ${bValue})`);
     prevState.current = { r: rValue, g: gValue, b: bValue };
   };
+
+  useEffect(() => {
+    setColor(`rgb(${rValue}, ${gValue}, ${bValue})`);
+  }, [rValue, gValue, bValue]); 
+
   const cancelOnClick = () => {
     setRValue(prevState.current.r);
     setGValue(prevState.current.g);
@@ -27,39 +31,59 @@ function App() {
     <div className="app-wrapper">
       <Square color={color} />
 
-      <Slider
-        min={0}
-        max={255}
-        value={rValue}
-        onChange={(v) => {
-          setRValue(v);
-        }}
-      />
+      <div>
+        <div>
+          <Slider
+            min={0}
+            max={255}
+            value={rValue}
+            onChange={(v) => {
+              setRValue(v);
+            }}
+            railStyle = {{
+              backgroundColor: "red",
+            }}
+          />
+          <text>{rValue}</text>
+        </div>
 
-      <text>{rValue}</text>
-      <Slider
-        min={0}
-        max={255}
-        value={gValue}
-        onChange={(v) => {
-          setGValue(v);
-        }}
-      />
 
-      <text>{gValue}</text>
+        <div>
+          <Slider
+            min={0}
+            max={255}
+            value={gValue}
+            onChange={(v) => {
+              setGValue(v);
+            }}
+            railStyle = {{
+              backgroundColor: "green"
+            }}
+          />
+          <text>{gValue}</text>
+        </div>
 
-      <Slider
-        min={0}
-        max={255}
-        value={bValue}
-        onChange={(v) => {
-          setBValue(v);
-        }}
-      />
+        <div>
+          <Slider
+            min={0}
+            max={255}
+            value={bValue}
+            onChange={(v) => {
+              setBValue(v);
+            }}
+            railStyle = {{
+              backgroundColor: "blue"
+            }}
+          />
+          <text>{bValue}</text>
+        </div>
+      </div>
 
-      <text>{bValue}</text>
-
-      <Button text={"Submit"} onClick={submitOnClick} />
+      <Button 
+        text={"Submit"}
+        onClick={submitOnClick} 
+        
+        />
       <Button text={"Cancel"} onClick={cancelOnClick} />
     </div>
   );
