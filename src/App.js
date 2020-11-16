@@ -1,27 +1,64 @@
-import React, {useState} from "react";
+import React, { useState, useRef } from "react";
+import Slider from "rc-slider";
+import "rc-slider/assets/index.css";
 import "./App.css";
-import Button from "./components/Buttons/Button.jsx";
-import Square from "./components/Square/Square.jsx";
-import Sliders from "./components/Sliders/Sliders";
-// import { Route, BrowserRouter } from "react-router-dom";
+import Button from "./components/Button";
+import Square from "./components/Square";
 
-function App(props) {
+function App() {
+  const [rValue, setRValue] = useState(0);
+  const [gValue, setGValue] = useState(0);
+  const [bValue, setBValue] = useState(0);
+  const [color, setColor] = useState(`rgb(${rValue}, ${gValue}, ${bValue})`);
 
-  const [color, setColor] = useState("#000");
+  const prevState = useRef({ r: rValue, g: gValue, b: bValue });
 
   const submitOnClick = () => {
-    console.log('Submit on click');
-    setColor(`(ddh), (sdf), ()`);
-  }
+    setColor(`rgb(${rValue}, ${gValue}, ${bValue})`);
+    prevState.current = { r: rValue, g: gValue, b: bValue };
+  };
   const cancelOnClick = () => {
-    console.log('Cancel');
-    setColor("blue");
-  }
+    setRValue(prevState.current.r);
+    setGValue(prevState.current.g);
+    setBValue(prevState.current.b);
+  };
 
   return (
     <div className="app-wrapper">
       <Square color={color} />
-      <Sliders />
+
+      <Slider
+        min={0}
+        max={255}
+        value={rValue}
+        onChange={(v) => {
+          setRValue(v);
+        }}
+      />
+
+      <text>{rValue}</text>
+      <Slider
+        min={0}
+        max={255}
+        value={gValue}
+        onChange={(v) => {
+          setGValue(v);
+        }}
+      />
+
+      <text>{gValue}</text>
+
+      <Slider
+        min={0}
+        max={255}
+        value={bValue}
+        onChange={(v) => {
+          setBValue(v);
+        }}
+      />
+
+      <text>{bValue}</text>
+
       <Button text={"Submit"} onClick={submitOnClick} />
       <Button text={"Cancel"} onClick={cancelOnClick} />
     </div>
