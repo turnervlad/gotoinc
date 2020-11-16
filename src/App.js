@@ -10,7 +10,7 @@ function App() {
   const [gValue, setGValue] = useState(0);
   const [bValue, setBValue] = useState(0);
   const [color, setColor] = useState(`rgb(${rValue}, ${gValue}, ${bValue})`);
-  const [isSliderHidden, setSlidersVisibility] = useState(false);
+  const [isSliderVisible, setSlidersVisibility] = useState(false);
 
   const prevState = useRef({ r: rValue, g: gValue, b: bValue });
 
@@ -19,8 +19,8 @@ function App() {
   }, [rValue, gValue, bValue]);
 
   const onSlidersBlockToggle = useCallback(() => {
-    setSlidersVisibility(!isSliderHidden);
-  }, [isSliderHidden]);
+    setSlidersVisibility(!isSliderVisible);
+  }, [isSliderVisible]);
 
   useEffect(() => {
     setColor(`rgb(${rValue}, ${gValue}, ${bValue})`);
@@ -30,6 +30,7 @@ function App() {
     setRValue(prevState.current.r);
     setGValue(prevState.current.g);
     setBValue(prevState.current.b);
+    setSlidersVisibility(true);
   }, []);
 
   const onChangeR = useCallback((v) => {
@@ -49,12 +50,12 @@ function App() {
       <Square color={color} />
 
       <Button
-        text={isSliderHidden ? "Show slider" : "Hide slider"}
+        text={isSliderVisible ? "Show slider" : "Hide slider"}
         onClick={onSlidersBlockToggle}
       />
 
-      {!isSliderHidden ? (
-        <div>
+      {!isSliderVisible ? (
+        <div className="wrap">
           <div>
             <Slider
               min={0}
